@@ -4,7 +4,6 @@ from database import db
 from models import Usuario
 from utils.security import security_manager
 
-# Importação das Views
 from views.splash_view import SplashView
 from views.config_view import ConfigView
 from views.login_view import LoginView
@@ -15,30 +14,23 @@ class RestauranteApp(ctk.CTk):
     def __init__(self):
         super().__init__()
         
-        # Configurações Visuais
         self.title("Sistema de Restaurante Pro")
-        self.colors = {
-            "primary": "#0055D4",
-            "background": "#121212",
-        }
+        self.colors = {"primary": "#0055D4", "background": "#121212"}
+        
         ctk.set_appearance_mode("Dark")
         ctk.set_default_color_theme("blue")
         self.configure(fg_color=self.colors["background"])
         
-        # Geometria
-        width = 1200
-        height = 700
+        width, height = 1200, 700
         self.minsize(1000, 600)
         self.center_window(width, height)
         
-        # Grid
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
         
         self.current_view = None
         self.session = None
         
-        # Início
         self.mostrar_splash()
 
     def center_window(self, width, height):
@@ -53,8 +45,6 @@ class RestauranteApp(ctk.CTk):
             self.current_view.destroy()
             self.current_view = None
 
-    # -------------------- NAVEGAÇÃO --------------------
-    
     def mostrar_splash(self):
         self.limpar_view()
         self.current_view = SplashView(self, on_finished=self.mostrar_config)
@@ -67,7 +57,6 @@ class RestauranteApp(ctk.CTk):
     
     def mostrar_login(self):
         self.limpar_view()
-        
         self.current_view = LoginView(
             self, 
             on_login_success=self.on_login, 
@@ -89,39 +78,31 @@ class RestauranteApp(ctk.CTk):
         self.current_view = MainView(self, usuario, self.session)
         self.current_view.grid(row=0, column=0, sticky="nsew")
 
-    # -------------------- LÓGICA DE NEGÓCIO --------------------
-
     def on_database_connect(self, config):
         try:
             db.conectar(config['host'], config['port'], config['user'], config['password'], config['dbname'])
             self.session = db.get_session()
-            messagebox.showinfo("Conectado", "Conexão estabelecida com sucesso!")
             self.mostrar_login()
         except Exception as e:
             messagebox.showerror("Erro de Conexão", f"Falha:\n{str(e)}")
 
     def on_register_submit(self, nome, email, senha):
-        # Lógica de Cadastro
         if self.session.query(Usuario).filter_by(email=email).first():
             messagebox.showerror("Erro", "Este email já está cadastrado.")
             return
 
         try:
-            hash_senha = security_manager.hash_senha(senha)
-            senha_enc = security_manager.encriptar(senha)
-            
             novo_usuario = Usuario(
                 nome=nome,
                 email=email,
-                senha_hash=hash_senha,
-                senha_encriptada=senha_enc
+                senha_hash=security_manager.hash_senha(senha),
+                senha_encriptada=security_manager.encriptar(senha)
             )
             self.session.add(novo_usuario)
             self.session.commit()
             
-            messagebox.showinfo("Sucesso", "Conta criada com sucesso!\nFaça login para continuar.")
+            messagebox.showinfo("Sucesso", "Conta criada com sucesso!")
             self.mostrar_login()
-            
         except Exception as e:
             messagebox.showerror("Erro", f"Erro ao criar conta: {e}")
 
@@ -140,7 +121,7 @@ class RestauranteApp(ctk.CTk):
             else:
                 messagebox.showerror("Login", "Senha incorreta.")
         except ValueError:
-            messagebox.showerror("Erro", "Dados de login corrompidos no banco.")
+            messagebox.showerror("Erro", "Dados de login corrompidos.")
 
 if __name__ == "__main__":
     app = RestauranteApp()
