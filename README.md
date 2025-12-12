@@ -43,19 +43,7 @@ O projeto utiliza a biblioteca `CustomTkinter` para entregar uma experiência vi
 - **Proteção de Dados:** Dados sensíveis trafegam criptografados internamente.
 - **Login Seguro:** Validação robusta com tratamento de erros e proteção contra SQL Injection via ORM.
 
----
 
-## 📸 Screenshots
-
-| Dashboard (KPIs) | Cardápio Visual |
-|:---:|:---:|
-| <img src="assets/screenshots/dashboard.png" alt="Dashboard" width="400"> | <img src="assets/screenshots/menu.png" alt="Cardápio" width="400"> |
-
-| Mapa de Mesas | Login Enterprise |
-|:---:|:---:|
-| <img src="assets/screenshots/tables.png" alt="Mesas" width="400"> | <img src="assets/screenshots/login.png" alt="Login" width="400"> |
-
----
 
 ## 🛠️ Tech Stack
 
