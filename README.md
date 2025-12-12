@@ -1,4 +1,4 @@
-# 🍽️ Restaurante Pro | Enterprise ERP
+# 🍽️ Nexora | Enterprise ERP
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python)
 ![CustomTkinter](https://img.shields.io/badge/GUI-CustomTkinter-007BFF?style=for-the-badge)
